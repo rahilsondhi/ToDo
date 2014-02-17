@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -28,7 +30,20 @@ public class ToDoActivity extends Activity {
         lvItems.setAdapter(todoAdapter);
         
         populateArrayItems();
+        setupListViewListener();
     }
+
+	private void setupListViewListener() {
+		lvItems.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapter, View item,
+					int pos, long id) {
+				todoItems.remove(pos);
+				todoAdapter.notifyDataSetInvalidated();
+				return true;
+			}
+		});
+	}
 
 	private void populateArrayItems() {
     	todoAdapter.add("Milk");
