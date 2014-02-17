@@ -4,6 +4,7 @@
     <string name="app_name">ToDo</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="add_todo_hint">What needs to be done?</string>
+    <string name="add_todo_hint">Type a todo</string>
+    <string name="btnAddText">Add</string>
 
 </resources>

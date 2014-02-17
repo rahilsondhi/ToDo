@@ -9,14 +9,15 @@
     tools:context=".ToDoActivity" >
 
     <EditText
-        android:id="@+id/etNewItem"
+        android:id="@+id/etNewTodo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@+id/button1"
         android:ems="10"
-        android:hint="@string/add_todo_hint" >
+        android:hint="@string/add_todo_hint"
+        android:inputType="textShortMessage" >
 
         <requestFocus />
     </EditText>
@@ -25,9 +26,19 @@
         android:id="@+id/lvItems"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/etNewItem"
+        android:layout_above="@+id/etNewTodo"
         android:layout_alignParentTop="true" >
 
     </ListView>
+
+    <Button
+        android:id="@+id/btnAddTodo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/etNewTodo"
+        android:layout_alignBottom="@+id/etNewTodo"
+        android:layout_alignParentRight="true"
+        android:onClick="addTodoItem"
+        android:text="@string/btnAddText" />
 
 </RelativeLayout>
