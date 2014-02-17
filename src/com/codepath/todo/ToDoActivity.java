@@ -1,9 +1,13 @@
 package com.codepath.todo;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import android.os.Bundle;
+import org.apache.commons.io.FileUtils;
+
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,35 +29,50 @@ public class ToDoActivity extends Activity {
         
         etNewTodo = (EditText) findViewById(R.id.etNewTodo);
         lvItems = (ListView) findViewById(R.id.lvItems);
-        todoItems = new ArrayList<String>();
+        readItems();
         todoAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todoItems);
         lvItems.setAdapter(todoAdapter);
         
-        populateArrayItems();
         setupListViewListener();
     }
 
 	private void setupListViewListener() {
 		lvItems.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
-			public boolean onItemLongClick(AdapterView<?> adapter, View item,
-					int pos, long id) {
+			public boolean onItemLongClick(AdapterView<?> parent, View item,
+					int pos, long rowId) {
 				todoItems.remove(pos);
-				todoAdapter.notifyDataSetInvalidated();
+				todoAdapter.notifyDataSetChanged();
+				writeItems();
 				return true;
 			}
 		});
-	}
-
-	private void populateArrayItems() {
-    	todoAdapter.add("Milk");
-    	todoAdapter.add("Eggs");
-    	todoAdapter.add("OJ");
 	}
 	
 	public void addTodoItem(View v) {
 		todoAdapter.add(etNewTodo.getText().toString());
 		etNewTodo.setText("");
+		writeItems();
+	}
+	
+	private void readItems() {
+		File filesDir = getFilesDir();
+		File todoFile = new File(filesDir, "todo.txt");
+		try {
+			todoItems = new ArrayList<String>(FileUtils.readLines(todoFile));
+		} catch (IOException e) {
+			todoItems = new ArrayList<String>();
+		}
+	}
+	
+	private void writeItems() {
+		File filesDir = getFilesDir();
+		File todoFile = new File(filesDir, "todo.txt");
+		try {
+			FileUtils.writeLines(todoFile, todoItems);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
