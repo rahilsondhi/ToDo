@@ -26,6 +26,7 @@
         android:layout_below="@+id/etEditTodo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:onClick="updateTodo"
         android:text="@string/save_button_hint" />
 
 </RelativeLayout>

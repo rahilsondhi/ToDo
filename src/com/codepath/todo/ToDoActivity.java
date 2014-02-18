@@ -17,6 +17,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class ToDoActivity extends Activity {
 	private ArrayList<String> todoItems;
@@ -38,6 +39,7 @@ public class ToDoActivity extends Activity {
         setupListViewListener();
     }
 
+    private final int REQUEST_CODE = 1;
 	private void setupListViewListener() {
 		lvItems.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
@@ -57,9 +59,24 @@ public class ToDoActivity extends Activity {
 				Intent i = new Intent(ToDoActivity.this, EditItemActivity.class);
 				i.putExtra("text", todoItems.get(pos).toString());
 				i.putExtra("pos", todoItems.get(pos));
-				startActivity(i);
+				startActivityForResult(i, REQUEST_CODE);
 			}
 		});
+	}
+	
+	private final int RESULT_OK = 1;
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+			String text = data.getExtras().getString("text");
+			int pos = data.getExtras().getInt("pos");
+			
+			todoItems.set(pos, text);
+			todoAdapter.notifyDataSetChanged();
+			writeItems();
+			
+			Toast.makeText(this, "Updated", Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	public void addTodoItem(View v) {
