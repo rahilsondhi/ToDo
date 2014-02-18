@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import org.apache.commons.io.FileUtils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -45,6 +47,17 @@ public class ToDoActivity extends Activity {
 				todoAdapter.notifyDataSetChanged();
 				writeItems();
 				return true;
+			}
+		});
+		
+		lvItems.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View item, int pos,
+					long id) {
+				Intent i = new Intent(ToDoActivity.this, EditItemActivity.class);
+				i.putExtra("text", todoItems.get(pos).toString());
+				i.putExtra("pos", todoItems.get(pos));
+				startActivity(i);
 			}
 		});
 	}
