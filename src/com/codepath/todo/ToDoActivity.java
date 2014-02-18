@@ -7,14 +7,17 @@ import java.util.ArrayList;
 import org.apache.commons.io.FileUtils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class ToDoActivity extends Activity {
 	private ArrayList<String> todoItems;
@@ -36,6 +39,7 @@ public class ToDoActivity extends Activity {
         setupListViewListener();
     }
 
+    private final int REQUEST_CODE = 1;
 	private void setupListViewListener() {
 		lvItems.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
@@ -47,6 +51,32 @@ public class ToDoActivity extends Activity {
 				return true;
 			}
 		});
+		
+		lvItems.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View item, int pos,
+					long id) {
+				Intent i = new Intent(ToDoActivity.this, EditItemActivity.class);
+				i.putExtra("text", todoItems.get(pos).toString());
+				i.putExtra("pos", todoItems.get(pos));
+				startActivityForResult(i, REQUEST_CODE);
+			}
+		});
+	}
+	
+	private final int RESULT_OK = 1;
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+			String text = data.getExtras().getString("text");
+			int pos = data.getExtras().getInt("pos");
+			
+			todoItems.set(pos, text);
+			todoAdapter.notifyDataSetChanged();
+			writeItems();
+			
+			Toast.makeText(this, "Updated", Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	public void addTodoItem(View v) {

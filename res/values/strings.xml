@@ -6,5 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="add_todo_hint">Type a todo</string>
     <string name="btnAddText">Add</string>
+    <string name="title_activity_edit_item">EditItemActivity</string>
+    <string name="save_button_hint">Save</string>
 
 </resources>
